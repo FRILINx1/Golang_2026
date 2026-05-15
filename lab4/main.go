@@ -5,7 +5,7 @@ import (
 )
 
 func generate() <-chan int {
-	out := make(chan int, 10)
+	out := make(chan int)
 	
 	go func() {
 		defer close(out)
@@ -35,7 +35,7 @@ func filterEven(in <-chan int) <-chan int {
 }
 
 func square(in <-chan int) <-chan int {
-	out := make(chan int, 5)
+	out := make(chan int)
 	
 	go func() {
 		defer close(out)

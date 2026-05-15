@@ -26,15 +26,7 @@ func main() {
 				if val%3 == 0 {
 					atomic.AddInt64(&counter, 1)
 				}
-			}
-		}
-	}()
-
-	wg.Add(1)
-	go func() {
-		defer wg.Done()
-		for {
-			select {
+				
 			case val, ok := <-oddCh:
 				if !ok {
 					return
@@ -45,6 +37,7 @@ func main() {
 			}
 		}
 	}()
+
 
 	for i := 1; i <= 1000; i++ {
 		if i%2 == 0 {

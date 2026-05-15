@@ -27,15 +27,7 @@ func main() {
 					counter++  
 					mu.Unlock() 
 				}
-			}
-		}
-	}()
-
-	wg.Add(1)
-	go func() {
-		defer wg.Done()
-		for {
-			select {
+				
 			case val, ok := <-oddCh:
 				if !ok {
 					return
@@ -48,6 +40,7 @@ func main() {
 			}
 		}
 	}()
+
 
 	for i := 1; i <= 1000; i++ {
 		if i%2 == 0 {
