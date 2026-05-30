@@ -1,0 +1,30 @@
+version: '3.8'
+
+services:
+  db:
+    image: postgres:15-alpine
+    container_name: lab11_db
+    restart: always
+    environment:
+      POSTGRES_USER: mukutko
+      POSTGRES_PASSWORD: 1234
+      POSTGRES_DB: go_bd_lab_8
+    ports:
+      - "5432:5432" 
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./migrations/000001_init.up.sql:/docker-entrypoint-initdb.d/init.sql
+
+  app:
+    build: .  
+    container_name: lab11_api
+    restart: always
+    ports:
+      - "8080:8080"
+    environment:
+      DATABASE_URL: "postgres://mukutko:1234@db:5432/go_bd_lab_8?sslmode=disable"
+    depends_on:
+      - db 
+
+volumes:
+  postgres_data: 

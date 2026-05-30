@@ -1,0 +1,49 @@
+version: '3.8'
+
+services:
+  nats-server:
+    image: nats:alpine
+    ports:
+      - "4222:4222"
+  sum-service:
+    build:
+      context: .
+      args:
+        SERVICE_DIR: ./sum
+    environment:
+      - NATS_URL=nats://nats-server:4222
+    depends_on:
+      - nats-server
+
+  square-service:
+    build:
+      context: .
+      args:
+        SERVICE_DIR: ./square
+    environment:
+      - NATS_URL=nats://nats-server:4222
+    depends_on:
+      - nats-server
+
+  filter-service:
+    build:
+      context: .
+      args:
+        SERVICE_DIR: ./filter
+    environment:
+      - NATS_URL=nats://nats-server:4222
+    depends_on:
+      - nats-server
+
+  generator-service:
+    build:
+      context: .
+      args:
+        SERVICE_DIR: ./generator
+    environment:
+      - NATS_URL=nats://nats-server:4222
+    depends_on:
+      - nats-server
+      - sum-service
+      - square-service
+      - filter-service
